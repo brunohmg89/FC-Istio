@@ -49,7 +49,96 @@
 ## Instalação
 
 - Aula 8: Instalação
-    - Falando sobre o processo de instalação do Istio e o que será utilizado no decorrer das aulas
+    - Falando sobre o processo de instalação do Istio e o que será utilizado no decorrer das aulas.
 
 - Aula 9: Instalando k3d
-    - 
+    - Link do k3d <https://k3d.io/v5.4.9/>
+    - k3d instalado via chocolatey
+        ```
+        choco install k3d
+        ```
+
+- Aula 10: Criando cluster
+    - Criando um cluster pelo k3d
+        ```
+        k3d.exe cluster create -p "8000:30000@loadbalancer" --agents 2
+        ```
+
+- Aula 11: Instalando istio ctl
+    - Link do Istio <https://istio.io/>
+    - Instalando o istioctl via chocolatey
+        ```
+        choco install istioctl
+        ```
+
+- Aula 12: Instalando istio no cluster
+    - Link para instalação do istio <https://istio.io/latest/docs/setup/getting-started/>
+    - O istio trabalha com profiles no qual escolhemos os módulos que serão instalados <https://istio.io/latest/docs/setup/additional-setup/config-profiles/>
+    - Instalando o istio default
+    
+        ![diagrama-distribuido-4](img/diagrama-sis-dist-print-4.png)
+    
+        ```
+        istioctl.exe install
+        ```
+    - Verificando a instalação do istio
+        ```
+        kubectl get ns
+        ```
+        ```
+        kubectl get po -n istio-system
+        ```
+        ```
+        kubectl get svc -n istio-system
+        ```
+
+- Aula 13: Injetando sidecar proxy
+    - criando e aplicando o primeiro deployment com nginx
+        ```
+        kubectl apply -f .\deployment.yaml
+        ```
+        ```
+        kubectl get po
+        ```
+    - Criando label para a criação do sidecar proxy
+        ```
+        kubectl label namespace default istio-injection=enabled
+        ```
+        ```
+        kubectl delete deploy nginx
+        ```
+        ```
+        kubectl apply -f .\deployment.yaml
+        ```
+        ```
+        kubectl get po
+        ```
+        ```
+        kubectl describe po
+        ```
+
+- Aula 14: Configurando addons
+    - Link dos addons (Grafana, Jaeger, Kiali e Prometheus) <https://github.com/istio/istio>
+    - Instalando addons
+        ```
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/prometheus.yaml
+        ```
+        ```
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/kiali.yaml
+        ```
+        ```
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/jaeger.yaml
+        ```
+        ```
+        kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/addons/grafana.yaml
+        ```
+        ```
+        kubectl get po -n istio-system
+        ```
+        ```
+        istioctl.exe dashboard kiali
+        ```
+
+## Gerenciamento de tráfego
+
+- Aula 15: Falando sobre gerenciamento de tráfego
