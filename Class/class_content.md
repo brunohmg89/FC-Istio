@@ -142,3 +142,49 @@
 ## Gerenciamento de tráfego
 
 - Aula 15: Falando sobre gerenciamento de tráfego
+
+- Aula 16: Conceitos Básicos
+    - Funcionamento padrão do Kubernetes
+    
+    ![diagrama-distribuido-5](img/diagrama-sis-dist-print-5.png)
+    
+    - Tráfego (Com a entrada do Istio)
+
+    ![diagrama-distribuido-6](img/diagrama-sis-dist-print-6.png)
+
+- Aula 17: Resumindo Conceitos
+    - Gateway: Gerencia a entrada (Ingress) e saída (Egress) do tráfego. Trabalha nos layers 4-6, garantindo o gerenciamento de portas, host, e TLS. É conectado diretamente a um Virtual Service que será responsável pelo roteamento.
+
+    - Virtual Service: Um Virtual Service permite você configurar como as requisições serão roteadas para um serviço. Ela possui uma série de regras que quando aplicadas farão com que a requisição seja direcionada ao destino correto.
+        - Roteamento de tráfego
+        - Subsets
+        - Fault Injection
+        - Retries
+        - Timeout
+
+    - Destination Rules: "Você pode pensar nos Virtual Services como uma forma que você tem para rotear o tráfego para um destino, e então você usa as Destination Rules para configurar o que acontece com o tráfego quando ele chega naquele destino."
+
+- Aula 18: Criando versões de Deployments
+    - Alteração no arquivo deployment (configurados dois PODs e um Service)
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+    ```
+    kubectl get po
+    ```
+    ```
+    kubectl get svc
+    ```
+    - Comando para verificar o Load Balancer entre os PODs (Linux), pode ser verificado dando refresh na tela do navegador.
+    ```
+    while true; do curl http://localhost:8000; echo; sleep 0.5; done;
+    ```
+    - Adicionada versão para os PODs
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+
+- Aula 19: Criando deploy canário manualmente
+
+
+
