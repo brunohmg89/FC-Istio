@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
+  replicas: 5
   selector:
     matchLabels:
       app: nginx
@@ -15,10 +16,6 @@ spec:
       containers:
       - name: nginx
         image: wesleywillians/nginx-ab
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 80
 
@@ -29,6 +26,7 @@ kind: Deployment
 metadata:
   name: nginx-b
 spec:
+  replicas: 10
   selector:
     matchLabels:
       app: nginx
@@ -41,10 +39,6 @@ spec:
       containers:
       - name: nginx
         image: wesleywillians/nginx-ab:b
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 80
 

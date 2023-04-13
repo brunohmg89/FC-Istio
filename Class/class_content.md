@@ -185,6 +185,63 @@
     ```
 
 - Aula 19: Criando deploy canário manualmente
+    - Aplicando 8 replicas para o nginx A e 2 para B.
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+    ```
+    kubectl get po
+    ```
 
+- Aula 20: Criando deploy canário em segundos com istio e Kiali
+    - Alterando para 1 replica por POD
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+    ```
+    kubectl get po
+    ```
+    - Criando um traffic Shifting pelo Kiali (direcionamento de carga)
+    ![diagrama-distribuido-7](img/diagrama-sis-dist-print-7.png)
+    ![diagrama-distribuido-8](img/diagrama-sis-dist-print-8.png)
+    ![diagrama-distribuido-9](img/diagrama-sis-dist-print-9.png)
+    ![diagrama-distribuido-10](img/diagrama-sis-dist-print-10.png)
 
+    - Criando tráfego para os PODs pelo Istio
+    Link para o exemplo de utilização do Fortio <https://istio.io/latest/docs/tasks/traffic-management/circuit-breaking/>
+    ```
+    kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.17/samples/httpbin/sample-client/fortio-deploy.yaml
+    ```
+    ```
+    $FORTIO_POD=kubectl get pods -l app=fortio -o 'jsonpath={.items[0].metadata.name}'
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -t 200s -loglevel Warning http://nginx-service:8000
+    ```
+    ![diagrama-distribuido-11](img/diagrama-sis-dist-print-11.png)
 
+- Aula 21: Criando Virtual Service e Destination Rule
+    - Criando o arquivo do Virtual Service (vs.yaml)
+    - Criando o arquivo do Destination Rule (dr.yaml)
+    ```
+    kubectl apply -f .\vs.yaml
+    ```
+    ```
+    kubectl apply -f .\dr.yaml
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -t 200s -loglevel Warning http://nginx-service:8000
+    ```
+
+- Aula 22: Tipos de Load Balancer
+    - Alterando o arquivo "dr.yaml" para utilização de Load Balancer especificos
+        - RANDOM
+        - ROUND_ROBIN
+        - LEAST_CONN
+    ```
+    kubectl apply -f .\dr.yaml
+    ```
+    - Alterado numero de replicas do arquivo de deployment
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
