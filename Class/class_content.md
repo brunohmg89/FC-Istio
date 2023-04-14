@@ -245,3 +245,50 @@
     ```
     kubectl apply -f .\deployment.yaml
     ```
+
+- Aula 23: Stick session e consistent hash
+
+- Aula 24: Dinâmica do consistent hash
+    - Tipos de Consistent Hash
+        - httpHeaderName
+        - httpCookie
+        - UserSourceIp
+        - httpQueryParameterName
+    ![diagrama-distribuido-12](img/diagrama-sis-dist-print-12.png)
+
+- Aula 25: Consistent Hash na prática
+    - Criando o arquivo "consistent-hash.yaml"
+    ```
+    kubectl apply -f .\consistent-hash.yaml
+    ```
+    - Testando o consistent hash
+    ```
+    kubectl exec -it nginx-868f9f4f4c-tc68t -- bash
+    ```
+    ```
+    curl http://nginx-service:8000
+    ```
+    - Exemplo do consistent, Wesley sempre acessando a Versão A e Bruno sempre a B
+    ```
+    curl --header "x-user: wesley" http://nginx-service:8000
+    ```
+    ```
+    curl --header "x-user: Bruno" http://nginx-service:8000
+    ```
+
+- Aula 26: Fault Injection na prática
+    - Criando o arquivo "fault-injection.yaml"
+    ```
+    kubectl apply -f .\fault-injection.yaml
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -t 200s -loglevel Warning http://nginx-service:8000
+    ```
+    - É possível criar o fault injection pelo Kiali
+    ![diagrama-distribuido-13](img/diagrama-sis-dist-print-13.png)
+    ![diagrama-distribuido-14](img/diagrama-sis-dist-print-14.png)
+
+
+
+
+
