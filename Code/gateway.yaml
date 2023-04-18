@@ -25,15 +25,20 @@ spec:
   gateways:
     - ingress-gateway-k3s
   http:
-    - route:
+    - match:
+      - uri:
+          prefix: "/b"
+      route:
+      - destination:
+          host: nginx-service
+          subset: v2    
+    - match:
+      - uri:
+          prefix: "/"
+      route:
       - destination:
           host: nginx-service
           subset: v1
-      weight: 0
-    - destination:
-        host: nginx-service
-        subset: v2
-      weight: 100
 
 ---
 

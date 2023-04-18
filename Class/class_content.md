@@ -364,16 +364,17 @@
     ```
 
 - Aula 33: Trabalhando com prefixos
-    - 
+    - alterando o arquivo "gateway.yaml"
+    ```
+    kubectl apply -f .\gateway.yaml
+    ```
 
-
-
-
-
-
-
-
-    
-
-
-
+- Aula 34: Configurando domínios
+    - Precisamos alterar nosso arquivo hosts para resolução de nomes colocando os seguintes:
+    ```
+    127.0.0.1 a.fullcycle b.fullcycle
+    ```
+    - Criando o arquivo "gatewat-domains.yaml"
+    ```
+    kubectl apply -f .\gateway-domains.yaml
+    ```
