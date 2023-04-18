@@ -288,7 +288,92 @@
     ![diagrama-distribuido-13](img/diagrama-sis-dist-print-13.png)
     ![diagrama-distribuido-14](img/diagrama-sis-dist-print-14.png)
 
+- Aula 27: Circuit Breaker
+    - Desenhos do que é e como funciona o circuit breaker
+    ![diagrama-distribuido-15](img/diagrama-sis-dist-print-15.png)
 
+- Aula 28: Preparando ambiente para circuit breaker
+    - Criando a pasta circuit breaker com um "deployment.yaml"
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+    ```
+    kubectl get po
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -n 20 -loglevel Warning http://nginx-service:8000
+    ```
+
+- Aula 29: Circuit breaker na prática
+    - Criando o arquivo "destination-rule.yaml" dentro de circuitbreaker.
+    - Erros 500 tratados pelo Istio (Outlier Detection) <https://istio.io/latest/docs/reference/config/networking/destination-rule/>
+        - consecutiveGatewayErrors (Trata erros 502, 503 e 504)
+        - consecutive5xxErrors (Trata todos os erros 500)
+    ```
+    kubectl apply -f .\circuit-breaker.yaml
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -n 200 -loglevel Warning http://nginx-service:8000
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -n 200 -loglevel Warning http://nginx-service:8000
+    ```
+    ```
+    kubectl get dr
+    ```
+    ```
+    kubectl delete dr circuit-breaker-servicex
+    ```
+    ```
+    kubectl exec "$FORTIO_POD" -c fortio -- fortio load -c 2 -qps 0 -n 200 -loglevel Warning http://nginx-service:8000
+    ```
+
+- Aula 30: Iniciando com gateways
+    - Alterado "weight" do arquivo "virtual-service.yaml"
+    ```
+    kubectl apply -f .\virtual-service.yaml
+    ```
+    ```
+    kubectl exec -it NOMEDOPOD -c nginx -- bash
+    ```
+
+- Aula 31: Configurando ingress gateway
+    - Criando o arquivo "gateway.yaml", inserido ingress, destination rule e virtual service
+    ```
+    kubectl get svc -n istio-system
+    ```
+    - Alterado o arquivo "deployment.yaml"
+    ```
+    kubectl apply -f .\deployment.yaml
+    ```
+    ```
+    kubectl get svc
+    ```
+    - Editando o ingress padrão do istio
+    ```
+    kubectl edit svc istio-ingressgateway -n istio-system
+    ```
+    ```
+    kubectl apply -f .\gateway.yaml
+    ```
+
+- Aula 32: Reconfigurando virtual service
+    - alterando o arquivo "gateway.yaml"
+    ```
+    kubectl apply -f .\gateway.yaml
+    ```
+
+- Aula 33: Trabalhando com prefixos
+    - 
+
+
+
+
+
+
+
+
+    
 
 
 
