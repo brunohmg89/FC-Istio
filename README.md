@@ -1,2 +1,9 @@
-# FC-Istio
-Curso Full Cylce de Service Mesh Istio
+# FullCycle - Integração Contínua
+
+## Descrição
+
+Curso Full Cylce de Service Mesh Istio.
+
+## Status do curso
+
+Concluído
